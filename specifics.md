@@ -1,6 +1,4 @@
-Excellent! A University Course Registration System is a fantastic project. As your client, I have a very clear vision for the tables we'll need to make this database robust and functional.
-
-Here's my breakdown of the essential tables and what data they should hold:
+## Here's my breakdown of the essential tables and what data they should hold:
 
 ---
 
@@ -84,5 +82,3 @@ Given `Course_Offerings`, the `Enrollments` table needs to link to an *offering*
 ---
 
 This set of tables should give us a solid foundation for managing students, instructors, departments, courses, and the actual process of course registration. I'm particularly keen on ensuring the relationships between these tables are clear, especially the many-to-many relationships for enrollments and course offerings.
-
-Let me know what you think of this structure. Once we agree on this, we can move on to the SQL queries!
