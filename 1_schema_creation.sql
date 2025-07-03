@@ -9,19 +9,19 @@ CREATE TABLE IF NOT EXISTS public.students
 (
     student_id bigserial NOT NULL,
     username character varying(255) NOT NULL,
-    matric_number bigint NOT NULL,
+    matric_number bigint character varying(255) NOT NULL,
     first_name character varying(255) NOT NULL,
     last_name character varying(255) NOT NULL,
     email character varying(255) NOT NULL,
     major_department_id bigint NOT NULL,
     phone_number character varying(255) NOT NULL,
-    "DOB" date NOT NULL,
+    DOB date NOT NULL,
     address text NOT NULL,
     CONSTRAINT pk_student_id PRIMARY KEY (student_id),
     CONSTRAINT uq1_email UNIQUE (email)
 );
 
-COMMENT ON TABLE public.students
+COMMENT ON TABLE public.students 
     IS 'a table for the the students info';
 COMMENT ON CONSTRAINT pk_student_id ON public.students
     IS 'primary key for student_id';
