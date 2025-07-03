@@ -2,7 +2,9 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+--- Schema creation start ---
 
+--- Table for students ---
 CREATE TABLE IF NOT EXISTS public.students
 (
     student_id bigserial NOT NULL,
@@ -27,6 +29,7 @@ COMMENT ON CONSTRAINT pk_student_id ON public.students
 COMMENT ON CONSTRAINT uq1_email ON public.students
     IS 'unique entity: email';
 
+--- Table for departments ---
 CREATE TABLE IF NOT EXISTS public.department
 (
     faculty_id bigint NOT NULL,
@@ -39,6 +42,7 @@ CREATE TABLE IF NOT EXISTS public.department
 COMMENT ON TABLE public.department
     IS 'about faculties and departments';
 
+--- Table for courses ---
 CREATE TABLE IF NOT EXISTS public.courses
 (
     course_id bigserial NOT NULL,
@@ -61,6 +65,7 @@ COMMENT ON CONSTRAINT pk_course_id ON public.courses
 COMMENT ON CONSTRAINT uq_course_code ON public.courses
     IS 'unique course codes for each course';
 
+--- Table for financial aid information ---
 CREATE TABLE IF NOT EXISTS public.financial_aid
 (
     "financial_aid_ID" bigserial NOT NULL, -- Added as PK
@@ -78,7 +83,7 @@ COMMENT ON TABLE public.financial_aid
 COMMENT ON CONSTRAINT pk_financial_aid_id ON public.financial_aid
     IS 'Primary key for financial_aid_ID';
 
-
+--- Table for semesters ---
 CREATE TABLE IF NOT EXISTS public.semester
 (
     semester_id bigserial,
@@ -89,6 +94,7 @@ CREATE TABLE IF NOT EXISTS public.semester
 COMMENT ON CONSTRAINT pk_semester_id ON public.semester
     IS 'primary key for semester_Id';
 
+--- Table for instructors ---
 CREATE TABLE IF NOT EXISTS public.instructors
 (
     instructor_id bigserial NOT NULL,
@@ -108,6 +114,7 @@ COMMENT ON TABLE public.instructors
 COMMENT ON CONSTRAINT uq2_email ON public.instructors
     IS 'unique email address';
 
+--- Table for faculty ---
 CREATE TABLE IF NOT EXISTS public.faculty
 (
     faculty_id bigserial NOT NULL,
@@ -122,6 +129,7 @@ COMMENT ON TABLE public.faculty
 COMMENT ON CONSTRAINT pk_faculty_id ON public.faculty
     IS 'primary key for faculty_id';
 
+--- Table for course offerings ---
 CREATE TABLE IF NOT EXISTS public.course_offering
 (
     offering_id bigserial NOT NULL, -- Corrected to bigserial for auto-incrementing PK
@@ -140,7 +148,7 @@ COMMENT ON TABLE public.course_offering
 COMMENT ON CONSTRAINT pk_offering_id ON public.course_offering
     IS 'Primary key for offering_id';
 
-
+--- Table for student enrollments ---
 CREATE TABLE IF NOT EXISTS public.enrollment
 (
     enrollment_id bigserial NOT NULL,
@@ -159,7 +167,7 @@ COMMENT ON CONSTRAINT pk_enrollment_id ON public.enrollment
 COMMENT ON CONSTRAINT uq_student_offering ON public.enrollment
     IS 'Ensures a student can only enroll in a specific course offering once.';
 
-
+--- Table for course prerequisites ---
 CREATE TABLE IF NOT EXISTS public.course_prerequisites
 (
     course_id bigint NOT NULL,          -- The course that *has* the prerequisite
@@ -172,9 +180,10 @@ COMMENT ON TABLE public.course_prerequisites
 COMMENT ON CONSTRAINT pk_course_prerequisites ON public.course_prerequisites
     IS 'Composite primary key for course and its prerequisite.';
 
+--- Schema creation end ---
 
+--- Table alterations start ---
 -- FOREIGN KEY CONSTRAINTS (Corrections applied below)
-
 ALTER TABLE IF EXISTS public.students
     ADD CONSTRAINT fk_dept_id FOREIGN KEY (major_department_id)
     REFERENCES public.department (department_id) MATCH SIMPLE
@@ -296,6 +305,5 @@ ALTER TABLE IF EXISTS public.course_prerequisites
 
 COMMENT ON CONSTRAINT fk_prerequisite_course_id ON public.course_prerequisites
     IS 'foreign key referencing the course that *is* the prerequisite';
-
-
+COMMIT;
 END;
