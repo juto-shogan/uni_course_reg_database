@@ -75,7 +75,6 @@ WHERE
     c.course_id = 1 -- Replace with desired course_id
 ORDER BY
     s.last_name, s.first_name;
-
 -- 8. Finding all courses taught by a specific instructor (Detailed output)
 SELECT
     i.instructor_id,
@@ -84,31 +83,32 @@ SELECT
     c.course_id,
     c.course_title,
     co.offering_id,
-    co.term,
-    co.semester
+    s.semester -- Corrected: Use s.semester from the joined semester table
 FROM
     public.instructors AS i
 INNER JOIN
     public.course_offering AS co ON i.instructor_id = co.instructor_id
 INNER JOIN
     public.courses AS c ON co.course_id = c.course_id
+INNER JOIN
+    public.semester AS s ON co.semester_id = s.semester_id -- Corrected: Add join to public.semester
 WHERE
-    i.instructor_id = 1; 
+    i.instructor_id = 1;
 
 -- 9. Finding all courses taught by a specific instructor (Concise output)
 SELECT
     c.course_id,
     c.course_title,
     co.offering_id,
-    co.term,
-    co.semester
-
+    s.semester -- Corrected: Use s.semester from the joined semester table
 FROM
     public.course_offering AS co
 INNER JOIN
     public.courses AS c ON co.course_id = c.course_id
+INNER JOIN
+    public.semester AS s ON co.semester_id = s.semester_id -- Corrected: Add join to public.semester
 WHERE
-    co.instructor_id = 1; -- Replace with desired instructor_id
+    co.instructor_id = 1;
 
 -- 10. Counting students per department (Excluding departments with no students)
 SELECT
