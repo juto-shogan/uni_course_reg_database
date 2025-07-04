@@ -85,7 +85,7 @@ SELECT
     c.course_title,
     co.offering_id,
     co.term,
-    co.year
+    co.semester
 FROM
     public.instructors AS i
 INNER JOIN
@@ -93,7 +93,7 @@ INNER JOIN
 INNER JOIN
     public.courses AS c ON co.course_id = c.course_id
 WHERE
-    i.instructor_id = 1; -- Replace with desired instructor_id
+    i.instructor_id = 1; 
 
 -- 9. Finding all courses taught by a specific instructor (Concise output)
 SELECT
@@ -101,7 +101,8 @@ SELECT
     c.course_title,
     co.offering_id,
     co.term,
-    co.year
+    co.semester
+
 FROM
     public.course_offering AS co
 INNER JOIN
@@ -117,7 +118,7 @@ SELECT
 FROM
     public.students AS s
 INNER JOIN
-    public.departments AS d ON s.department_id = d.department_id
+    public.department AS d ON s.major_department_id = d.department_id -- Corrected: public.department and major_department_id
 GROUP BY
     d.department_id, d.department_name
 ORDER BY
@@ -129,9 +130,9 @@ SELECT
     d.department_name,
     COUNT(s.student_id) AS student_count
 FROM
-    public.departments AS d
+    public.department AS d -- Corrected: public.department
 LEFT JOIN
-    public.students AS s ON d.department_id = s.department_id
+    public.students AS s ON d.department_id = s.major_department_id -- Corrected: major_department_id
 GROUP BY
     d.department_id, d.department_name
 ORDER BY
@@ -142,9 +143,9 @@ SELECT
     co.offering_id,
     c.course_id,
     c.course_title,
-    co.max_seats,
+    co.capacity, -- Corrected: Use co.capacity
     COUNT(e.enrollment_id) AS enrolled_students,
-    (co.max_seats - COUNT(e.enrollment_id)) AS available_seats
+    (co.capacity - COUNT(e.enrollment_id)) AS available_seats -- Corrected: Use co.capacity
 FROM
     public.course_offering AS co
 INNER JOIN
@@ -152,9 +153,9 @@ INNER JOIN
 LEFT JOIN
     public.enrollment AS e ON co.offering_id = e.offering_id
 GROUP BY
-    co.offering_id, c.course_id, c.course_title, co.max_seats
+    co.offering_id, c.course_id, c.course_title, co.capacity -- Corrected: Use co.capacity
 HAVING
-    (co.max_seats - COUNT(e.enrollment_id)) > 0
+    (co.capacity - COUNT(e.enrollment_id)) > 0 -- Corrected: Use co.capacity
 ORDER BY
     c.course_title;
 
@@ -163,9 +164,9 @@ SELECT
     c.course_id,
     c.course_title,
     co.offering_id,
-    co.max_seats,
+    co.capacity, -- Corrected: Use co.capacity
     COUNT(e.enrollment_id) AS enrolled_students,
-    (co.max_seats - COUNT(e.enrollment_id)) AS available_seats
+    (co.capacity - COUNT(e.enrollment_id)) AS available_seats -- Corrected: Use co.capacity
 FROM
     public.course_offering AS co
 INNER JOIN
@@ -173,8 +174,8 @@ INNER JOIN
 LEFT JOIN
     public.enrollment AS e ON co.offering_id = e.offering_id
 GROUP BY
-    c.course_id, c.course_title, co.offering_id, co.max_seats
+    c.course_id, c.course_title, co.offering_id, co.capacity -- Corrected: Use co.capacity
 HAVING
-    (co.max_seats - COUNT(e.enrollment_id)) > 0
+    (co.capacity - COUNT(e.enrollment_id)) > 0 -- Corrected: Use co.capacity
 ORDER BY
     c.course_title;
