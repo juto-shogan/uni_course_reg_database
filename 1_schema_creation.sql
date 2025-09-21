@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS public.students
 (
     student_id bigserial NOT NULL,
     username character varying(255) NOT NULL,
-    matric_number bigint character varying(255) NOT NULL,
+    matric_number bigint  NOT NULL,
     first_name character varying(255) NOT NULL,
     last_name character varying(255) NOT NULL,
     email character varying(255) NOT NULL,
